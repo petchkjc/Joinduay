@@ -1,0 +1,24 @@
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" />
+  </head>
+<h1>Activity List</h1>
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-12" >
+			{% for p in object_list %}
+				<a href="/person/{{p.pk}}" class="thumbnail">
+					<!-- <p>id: {{p.id}}</p> -->
+					<p>Activity Name: {{ p.name }}</p>
+					<p>Description: {{ p.description }}</p>
+					<p>Vote : {{ p.vote }}</p>
+				</a>
+				
+			{% empty %}
+			    <div class="jumbotron">
+			    <h1>No person yet!</h1>  
+			  	</div>
+			{% endfor %}
+		</div>	
+	</div>
+</div>

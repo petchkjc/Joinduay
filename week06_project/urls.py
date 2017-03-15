@@ -17,13 +17,19 @@ from django.conf.urls import include, url
 from django.contrib import admin
 from django.views.generic.base import RedirectView
 from myapp import views
+from django.conf import settings
+from django.conf.urls.static import static
 
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^auth/', include('wl_auth.urls', namespace="wl_auth")),
-    # url(r'^main/', include('main.urls', namespace="main")),
-    # url(r'^$', RedirectView.as_view(url="/main/home/"), name='index'),
     url(r'^home/', views.home, name='home'),
-
+    url(r'^add_poll/$', views.CreateAddView.as_view(), name='add_poll'),
+    url(r'^add_poll/(?P<pk>[0-9]+)$', views.UpdateAddView.as_view()),
+    url(r'^add_poll_list/$', views.ListAddView.as_view(), name='add_poll_list'),
+    url(r'^vote/', views.Vote, name='vote'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
