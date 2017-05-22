@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'wl_auth',
     'crispy_forms',
     'django_extensions',
+    'social_django',
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
@@ -56,6 +57,7 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'social_django.middleware.SocialAuthExceptionMiddleware', # <--
 ]
 
 ROOT_URLCONF = 'week06_project.urls'
@@ -71,10 +73,21 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+
+                'social_django.context_processors.backends',  # <--
+                'social_django.context_processors.login_redirect', # <--
             ],
         },
     },
 ]
+
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.github.GithubOAuth2',
+    'social_core.backends.twitter.TwitterOAuth',
+    'social_core.backends.facebook.FacebookOAuth2',
+
+    'django.contrib.auth.backends.ModelBackend',
+)
 
 WSGI_APPLICATION = 'week06_project.wsgi.application'
 
@@ -86,6 +99,11 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+
+        'USER': '',
+        'PASSWORD': '',
+        'HOST': '',   # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
+        'PORT': '',   # Set to empty string for default.
     }
 }
 
@@ -125,6 +143,13 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
+
+LOGIN_URL = 'login'
+LOGOUT_URL = 'logout'
+LOGIN_REDIRECT_URL = 'home'
+
+SOCIAL_AUTH_FACEBOOK_KEY = '293412431107571'  # App ID
+SOCIAL_AUTH_FACEBOOK_SECRET = 'b1a7842ef2b341b7a6131a14bc0e88bd'  # App Secret
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
